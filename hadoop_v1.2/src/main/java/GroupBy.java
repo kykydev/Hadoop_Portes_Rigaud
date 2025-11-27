@@ -1,6 +1,8 @@
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -8,6 +10,7 @@ import java.util.logging.SimpleFormatter;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.DoubleWritable;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -38,9 +41,17 @@ public class GroupBy {
 	public static class Map extends Mapper<LongWritable, Text, Text, DoubleWritable> {
 
 		@Override
-		public void map(LongWritable key, Text value, Context context) {
-			// TODO: à compléter
-		}
+		public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+            String line = value.toString();
+
+            String[] elems = line.split(",");
+            if (elems[5].equals("Customer ID")){return;}
+            String customerID = elems[5];
+            double profit = Double.parseDouble(elems[20]);
+
+
+            context.write(new Text(customerID),new DoubleWritable(profit));
+        }
 	}
 
 	public static class Reduce extends Reducer<Text, DoubleWritable, Text, DoubleWritable> {
@@ -48,8 +59,15 @@ public class GroupBy {
 		@Override
 		public void reduce(Text key, Iterable<DoubleWritable> values, Context context)
 				throws IOException, InterruptedException {
-			// TODO: à compléter
-		}
+
+            double sum = 0;
+
+            for (DoubleWritable val : values)
+                sum += val.get();
+
+            context.write(key, new DoubleWritable(sum));
+
+        }
 	}
 
 	public static void main(String[] args) throws Exception {
