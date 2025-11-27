@@ -64,8 +64,14 @@ public class WordCount {
 			if (Arrays.equals(words, emptyWords))
 				return;
 
-			for (String word : words)
-				context.write(new Text(word), one);
+            String modif;
+			for (String word : words) {
+                modif = word.replaceAll("[^\\p{L}\\p{N}\\s]", " ");
+                for (String z : modif.split(" ")) {
+                    if (z.length()<4){continue;}
+                context.write(new Text(z.toLowerCase()), one);
+                }
+            }
 		}
 	}
 
@@ -78,7 +84,8 @@ public class WordCount {
 			for (IntWritable val : values)
 				sum += val.get();
 
-            if(sum >= 10) {
+
+            if(sum >= 4) {
                 context.write(key, new IntWritable(sum));
             }
 		}
