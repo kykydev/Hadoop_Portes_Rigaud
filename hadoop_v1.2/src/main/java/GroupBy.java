@@ -35,7 +35,7 @@ public class GroupBy {
 			LOG.addHandler(fh);
 		} catch (SecurityException | IOException e) {
 			System.exit(1);
-		}
+		}   
 	}
 
 	public static class Map extends Mapper<LongWritable, Text, Text, DoubleWritable> {
