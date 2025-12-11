@@ -136,7 +136,7 @@ public class JoinRequête4 {
                 }
             }
             // Sortie finale : Tranche d'âge (Clé), Somme Totale (Valeur)
-            context.write(new Text(key), new Text(Integer.toString(sum)));
+            context.write(new Text(key+","), new Text(Integer.toString(sum)));
         }
     }
 
