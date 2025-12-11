@@ -55,11 +55,11 @@ public class JoinRequête1 {
 
             if (fileName.equals("contenu_dimension.csv")){
                 keyId = elems[0];
-                ecrit = fileName.substring(0,2)+"|"+elems[5];
+                ecrit = fileName.substring(0,3)+"|"+elems[5];
             }
             else{
                 keyId   = elems[5];
-                ecrit = fileName.substring(0,2)+"|"+elems[elems.length-1];
+                ecrit = fileName.substring(0,3)+"|"+elems[elems.length-1];
             }
             context.write(new Text(keyId), new Text(ecrit));
         }
@@ -86,16 +86,21 @@ public class JoinRequête1 {
                     genreById.put(key.toString(),genre);
                 }
                 if (elems[0].startsWith("str")) {
-                        int temp = streamsValidesById.get(key.toString());
-                        if (streamsValidesById.get(key.toString())==null){temp=0;}//LA
-                        streamsValidesById.put(key.toString(), Integer.parseInt(elems[1]+temp));
+                    if (!elems[1].equals("\"NB_STREAM_VALIDE\"")){
+                    System.out.println("aaaaaaaaaaaaaaaaa");
+                        int temp = 0;
+                        if (streamsValidesById.get(key.toString())!=null){temp=streamsValidesById.get(key.toString());}//LA
+                        streamsValidesById.put(key.toString(), Integer.parseInt(elems[1])+temp);
+                    }
                 }
             }
 
               for (String id :  streamsValidesById.keySet()){
+                System.out.println(id);
                   if (genreById.get(id)!=null){
                       context.write(new Text(key+","), new Text(genreById.get(id)+","+streamsValidesById.get(id)));
                   }
+
               }
 
 
@@ -112,21 +117,10 @@ public class JoinRequête1 {
             FileSplit split = (FileSplit) context.getInputSplit();
             String fileName = split.getPath().getName();
 
-            String keyId;
-            String ecrit;
             String line = value.toString();
             String[] elems = line.split(",");
-
-            if ( elems[0].equals("ID_DATE")  || elems[0].equals("ID_CONTENU")){return;}
-
-            if (fileName.equals("contenu_dimension.csv")){
-                keyId = elems[0];
-                ecrit = fileName.substring(0,2)+"|"+elems[elems.length-1];
-            }
-            else{
-                keyId   = elems[5];
-                ecrit = fileName.substring(0,2)+"|"+elems[5];
-            }
+            String keyId = elems[1];
+            String ecrit = elems[2];
             context.write(new Text(keyId), new Text(ecrit));
         }
     }
@@ -140,25 +134,14 @@ public class JoinRequête1 {
 
 
             String[] elems = new String[10];
-            String customerName = "";
-            ArrayList<String> orderComments = new ArrayList<>();
+
+            int sum = 0;
+
 
             for (Text val : values) {
-                elems = val.toString().split("\\|");
-                if (elems[0].startsWith("c")) {
-                    customerName = elems[1];
-                }
-                if (elems[0].startsWith("o")) {
-                    orderComments.add(elems[1]);
-                }
+                sum += Integer.parseInt(val.toString());
             }
-            if (!customerName.isEmpty()){
-
-                for (String com : orderComments){
-                    context.write(key, new Text(customerName+" | "+com));
-                }
-            }
-
+            context.write( new Text(key+", "),new Text(Integer.toString(sum)));
         }
     }
 
@@ -187,7 +170,7 @@ public class JoinRequête1 {
         job.waitForCompletion(true);
 
         //Second job : Group by genre
-/*
+
         Configuration conf2 = new Configuration();
 
         Job job2 = new Job(conf, "groupBy");
@@ -209,6 +192,6 @@ public class JoinRequête1 {
         FileInputFormat.addInputPath(job2, temp);
         FileOutputFormat.setOutputPath(job2, new Path(OUTPUT_PATH + Instant.now().getEpochSecond()));
         job2.waitForCompletion(true);
-*/
+
     }
 }
