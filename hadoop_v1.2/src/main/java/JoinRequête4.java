@@ -13,7 +13,6 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.util.HashMap;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -36,164 +35,157 @@ public class JoinRequête4 {
     }
 
     public static class Map extends Mapper<LongWritable, Text, Text, Text> {
-
-
         @Override
         public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 
             FileSplit split = (FileSplit) context.getInputSplit();
             String fileName = split.getPath().getName();
-
-            String keyId="";
-            String ecrit="";
             String line = value.toString();
+
+            if (key.get() == 0 && (line.startsWith("ID_segment") || line.startsWith("ID_date"))) {
+                return;
+            }
+
             String[] elems = line.split(",");
+            if (elems.length < 4) { return; }
 
-            if ( elems[0].equals("ID_offre") ||elems[0].equals("ID_segment")  || elems[0].equals("ID_date")){return;}
-
+            String keyId = "";
+            String ecrit = "";
 
             if (fileName.equals("segment_utilisateurs_dimension.csv")) {
+                // [ID_segment(0), nom_tranche_d_age(1), ...]
                 keyId = elems[0];
-                ecrit = fileName.substring(0,3)+"|"+elems[3];
+                ecrit = "seg|" + elems[1].trim();
             }
-
-            if (fileName.equals("abonnement_facts.csv")) {
+            // CORRECTION DU NOM DU FICHIER : "abonnement_facts.csv"
+            else if (fileName.equals("abonnement_facts.csv")) {
+                // [ID_date(0), ID_offre(1), ID_region(2), ID_segment(3), ...]
                 keyId = elems[3];
-                ecrit = fileName.substring(0,3)+"|1";
+                ecrit = "abo|1";
+            } else {
+                return;
             }
 
-
-            if (keyId.isEmpty()){return;}
-            context.write(new Text(keyId), new Text(ecrit));
+            if (!keyId.isEmpty()) {
+                context.write(new Text(keyId), new Text(ecrit));
+            }
         }
     }
 
-
     public static class Reduce extends Reducer<Text, Text, Text, Text> {
-
         @Override
         public void reduce(Text key, Iterable<Text> values, Context context)
                 throws IOException, InterruptedException {
 
-
-            String[] elems = new String[10];
-
-
-            HashMap<String,String> genreById = new HashMap();
-            HashMap<String,Integer> streamsValidesById = new HashMap();
+            String ageSegment = null;
+            int totalAboCount = 0;
 
             for (Text val : values) {
-                elems = val.toString().split("\\|");
-                if (elems[0].startsWith("abo")) {
-                    String genre = elems[1];
-                    genreById.put(key.toString(),genre);
-                }
+                String[] elems = val.toString().split("\\|");
+
+                if (elems.length < 2) continue;
+
                 if (elems[0].startsWith("seg")) {
-                    if (!elems[1].equals("\"NB_STREAM_VALIDE\"")){
-                        int temp = 0;
-                        if (streamsValidesById.get(key.toString())!=null){temp=streamsValidesById.get(key.toString());}//LA
-                        streamsValidesById.put(key.toString(), Integer.parseInt(elems[1])+temp);
+                    ageSegment = elems[1].trim();
+                }
+                if (elems[0].startsWith("abo")) {
+                    try {
+                        totalAboCount += Integer.parseInt(elems[1].trim());
+                    } catch (NumberFormatException e) {
+
                     }
                 }
             }
 
-              for (String id :  streamsValidesById.keySet()){
-                System.out.println(id);
-                  if (genreById.get(id)!=null){
-                      context.write(new Text(key+","), new Text(genreById.get(id)+","+streamsValidesById.get(id)));
-                  }
-
-              }
-
-
+            if (ageSegment != null && totalAboCount > 0) {
+                // Sortie du Job 1 : Clé = Tranche d'âge, Valeur = Compte Total
+                context.write(new Text(ageSegment), new Text(String.valueOf(totalAboCount)));
+            }
         }
     }
 
 
     public static class Map2 extends Mapper<LongWritable, Text, Text, Text> {
-
-
         @Override
         public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 
-            FileSplit split = (FileSplit) context.getInputSplit();
-            String fileName = split.getPath().getName();
-
             String line = value.toString();
-            String[] elems = line.split(",");
-            String keyId = elems[1];
-            String ecrit = elems[2];
+            String[] elems = line.split("\\t");
+
+            if (elems.length < 2) { return; }
+
+            String keyId = elems[0].trim();
+            String ecrit = elems[1].trim();
+
             context.write(new Text(keyId), new Text(ecrit));
         }
     }
 
-
     public static class Reduce2 extends Reducer<Text, Text, Text, Text> {
-
         @Override
         public void reduce(Text key, Iterable<Text> values, Context context)
                 throws IOException, InterruptedException {
 
-
-            String[] elems = new String[10];
-
             int sum = 0;
 
-
             for (Text val : values) {
-                sum += Integer.parseInt(val.toString());
+                try {
+                    sum += Integer.parseInt(val.toString().trim());
+                } catch (NumberFormatException e) {
+
+                }
             }
-            context.write( new Text(key+", "),new Text(Integer.toString(sum)));
+            // Sortie finale : Tranche d'âge (Clé), Somme Totale (Valeur)
+            context.write(new Text(key), new Text(Integer.toString(sum)));
         }
     }
 
     public static void main(String[] args) throws Exception {
 
-
-        //Premier job : Join entre les deux tables
         Configuration conf = new Configuration();
+        Path temp = new Path(OUTPUT_PATH + "_TEMP-" + Instant.now().getEpochSecond());
 
-        Job job = new Job(conf, "Join");
+        // Job 1 : Jointure et première agrégation
+        Job job1 = new Job(conf, "Join-Dimension-Fact");
 
-        job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(Text.class);
+        job1.setJarByClass(JoinRequête4.class);
 
-        job.setMapperClass(Map.class);
-        job.setReducerClass(Reduce.class);
+        job1.setOutputKeyClass(Text.class);
+        job1.setOutputValueClass(Text.class);
 
-        job.setOutputValueClass(Text.class);
+        job1.setMapperClass(Map.class);
+        job1.setReducerClass(Reduce.class);
 
-        job.setInputFormatClass(TextInputFormat.class);
-        job.setOutputFormatClass(TextOutputFormat.class);
+        job1.setInputFormatClass(TextInputFormat.class);
+        job1.setOutputFormatClass(TextOutputFormat.class);
 
-        FileInputFormat.addInputPath(job, new Path(INPUT_PATH));
-        Path temp = new Path(OUTPUT_PATH+"_TEMP" + Instant.now().getEpochSecond());
-        FileOutputFormat.setOutputPath(job,temp);
-        job.waitForCompletion(true);
+        FileInputFormat.addInputPath(job1, new Path(INPUT_PATH));
+        FileOutputFormat.setOutputPath(job1, temp);
 
-        //Second job : Group by genre
+        if (!job1.waitForCompletion(true)) {
+            System.exit(1);
+        }
 
+        // Job 2 : Group by Tranche d'âge
         Configuration conf2 = new Configuration();
 
-        Job job2 = new Job(conf, "groupBy");
+        Job job2 = new Job(conf2, "GroupBy-Age-Segment");
 
+        job2.setJarByClass(JoinRequête4.class);
 
         job2.setOutputKeyClass(Text.class);
         job2.setOutputValueClass(Text.class);
 
-
         job2.setMapperClass(Map2.class);
         job2.setReducerClass(Reduce2.class);
-
-        job2.setOutputValueClass(Text.class);
 
         job2.setInputFormatClass(TextInputFormat.class);
         job2.setOutputFormatClass(TextOutputFormat.class);
 
-
         FileInputFormat.addInputPath(job2, temp);
         FileOutputFormat.setOutputPath(job2, new Path(OUTPUT_PATH + Instant.now().getEpochSecond()));
-        job2.waitForCompletion(true);
 
+        job2.waitForCompletion(true);
+        temp.getFileSystem(conf).delete(temp, true);
     }
 }
