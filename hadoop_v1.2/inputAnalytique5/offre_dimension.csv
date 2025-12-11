@@ -1,0 +1,6 @@
+ID_offre,nom_offre,type_offre,prix_mensuel_eur,limite_comptes,duree_ecoute_livre_audio,FLAG_spotify_kids,FLAG_publicite,FLAG_musique_hors_connexion,FLAG_audio_lossless
+1,Offre Gratuite,Free,0.00,1,0,N,O,N,N
+2,Premium Solo,Premium,9.99,1,30,N,N,O,N
+3,Premium Duo,Duo,12.99,2,30,N,N,O,N
+4,Premium Famille,Famille,15.99,6,30,O,N,O,O
+5,Premium Étudiant,Étudiant,4.99,1,30,N,N,O,N

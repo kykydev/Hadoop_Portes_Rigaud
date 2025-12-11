@@ -1,0 +1,101 @@
+ID_region,nom_region,code_region_ISO3166_2,nom_pays,code_pays_ISO3166_1,fuseau_horaire,continent,langue_principale,devise_monetaire
+1,Paris-IDF,FR-IDF,France,FRA,CET,Europe,Français,EUR
+2,Bavière,DE-BY,Allemagne,DEU,CET,Europe,Allemand,EUR
+3,Californie,US-CA,États-Unis,USA,PST,Amériques,Anglais,USD
+4,São Paulo,BR-SP,Brésil,BRA,BRT,Amériques,Portugais,BRL
+5,Tokyo,JP-13,Japon,JPN,JST,Asie,Japonais,JPY
+6,Alberta,CA-AB,Canada,CAN,MST,Amériques,Anglais,CAD
+7,Nouvelle-Galles du Sud,AU-NSW,Australie,AUS,AEST,Océanie,Anglais,AUD
+8,Madrid,ES-MD,Espagne,ESP,CET,Europe,Espagnol,EUR
+9,Inde du Sud,IN-TN,Inde,IND,IST,Asie,Hindi,INR
+10,Cap Occidental,ZA-WC,Afrique du Sud,ZAF,SAST,Afrique,Anglais,ZAR
+11,New York,US-NY,États-Unis,USA,EST,Amériques,Anglais,USD
+12,Ontario,CA-ON,Canada,CAN,EST,Amériques,Anglais,CAD
+13,Moscou,RU-MOW,Russie,RUS,MSK,Europe,Russe,RUB
+14,Shanghai,CN-31,Chine,CHN,CST,Asie,Mandarin,CNY
+15,Buenos Aires,AR-B,Argentine,ARG,ART,Amériques,Espagnol,ARS
+16,Londres,GB-LND,Royaume-Uni,GBR,GMT,Europe,Anglais,GBP
+17,Rio de Janeiro,BR-RJ,Brésil,BRA,BRT,Amériques,Portugais,BRL
+18,Berlin,DE-BE,Allemagne,DEU,CET,Europe,Allemand,EUR
+19,Lombardie,IT-25,Italie,ITA,CET,Europe,Italien,EUR
+20,Mexico,MX-CMX,Mexique,MEX,CST,Amériques,Espagnol,MXN
+21,Séoul,KR-11,Corée du Sud,KOR,KST,Asie,Coréen,KRW
+22,Le Caire,EG-C,Égypte,EGY,EET,Afrique,Arabe,EGP
+23,Dubaï,AE-DU,Émirats Arabes Unis,ARE,GST,Asie,Arabe,AED
+24,Province du Cap-Oriental,ZA-EC,Afrique du Sud,ZAF,SAST,Afrique,Anglais,ZAR
+25,Victoria,AU-VIC,Australie,AUS,AEST,Océanie,Anglais,AUD
+26,Province de Québec,CA-QC,Canada,CAN,EST,Amériques,Français,CAD
+27,Texas,US-TX,États-Unis,USA,CST,Amériques,Anglais,USD
+28,Flandre,BE-VLG,Belgique,BEL,CET,Europe,Néerlandais,EUR
+29,Mendoza,AR-M,Argentine,ARG,ART,Amériques,Espagnol,ARS
+30,Beijing,CN-11,Chine,CHN,CST,Asie,Mandarin,CNY
+31,Hawaï,US-HI,États-Unis,USA,HST,Amériques,Anglais,USD
+32,Île-du-Prince-Édouard,CA-PE,Canada,CAN,AST,Amériques,Anglais,CAD
+33,Marseille,FR-PAC,France,FRA,CET,Europe,Français,EUR
+34,Saxe,DE-SN,Allemagne,DEU,CET,Europe,Allemand,EUR
+35,Vénétie,IT-34,Italie,ITA,CET,Europe,Italien,EUR
+36,Istanbul,TR-34,Turquie,TUR,TRT,Asie,Turc,TRY
+37,Bangkok,TH-10,Thaïlande,THA,ICT,Asie,Thaï,THB
+38,Caracas,VE-A,Venezuela,VEN,VET,Amériques,Espagnol,VES
+39,Province du Gauteng,ZA-GP,Afrique du Sud,ZAF,SAST,Afrique,Anglais,ZAR
+40,Queensland,AU-QLD,Australie,AUS,AEST,Océanie,Anglais,AUD
+41,Nouvelle-Écosse,CA-NS,Canada,CAN,AST,Amériques,Anglais,CAD
+42,Sverdlovsk,RU-SVE,Russie,RUS,YEKT,Europe,Russe,RUB
+43,Hong Kong,CN-HK,Chine,CHN,HKT,Asie,Cantonais,HKD
+44,Miami,US-FL,États-Unis,USA,EST,Amériques,Anglais,USD
+45,Valence,ES-VC,Espagne,ESP,CET,Europe,Espagnol,EUR
+46,Pérou,PE-LIM,Pérou,PER,PET,Amériques,Espagnol,PEN
+47,Lagos,NG-LA,Nigeria,NGA,WAT,Afrique,Anglais,NGN
+48,Casablanca,MA-CAS,Maroc,MAR,CET,Afrique,Arabe,MAD
+49,Carthagène,CO-BOL,Colombie,COL,COT,Amériques,Espagnol,COP
+50,Jalisco,MX-JAL,Mexique,MEX,CST,Amériques,Espagnol,MXN
+51,Hô Chi Minh-Ville,VN-SG,Viêt Nam,VNM,ICT,Asie,Vietnamien,VND
+52,Midi-Pyrénées,FR-MP,France,FRA,CET,Europe,Français,EUR
+53,Bade-Wurtemberg,DE-BW,Allemagne,DEU,CET,Europe,Allemand,EUR
+54,Andalousie,ES-AN,Espagne,ESP,CET,Europe,Espagnol,EUR
+55,Floride,US-FL,États-Unis,USA,EST,Amériques,Anglais,USD
+56,Colombie-Britannique,CA-BC,Canada,CAN,PST,Amériques,Anglais,CAD
+57,Perth,AU-WA,Australie,AUS,AWST,Océanie,Anglais,AUD
+58,Penang,MY-07,Malaisie,MYS,MYT,Asie,Malais,MYR
+59,Toscane,IT-52,Italie,ITA,CET,Europe,Italien,EUR
+60,Athènes,GR-A,Grèce,GRC,EET,Europe,Grec,EUR
+61,Lima,PE-LMA,Pérou,PER,PET,Amériques,Espagnol,PEN
+62,Porto Alegre,BR-RS,Brésil,BRA,BRT,Amériques,Portugais,BRL
+63,Dakar,SN-DK,Sénégal,SEN,GMT,Afrique,Français,XOF
+64,Kiev,UA-30,Ukraine,UKR,EET,Europe,Ukrainien,UAH
+65,Singapour,SG-01,Singapour,SGP,SGT,Asie,Anglais,SGD
+66,Arizona,US-AZ,États-Unis,USA,MST,Amériques,Anglais,USD
+67,Vancouver,CA-BC,Canada,CAN,PST,Amériques,Anglais,CAD
+68,Canton,CN-44,Chine,CHN,CST,Asie,Cantonais,CNY
+69,Jakarta,ID-JK,Indonésie,IDN,WIB,Asie,Indonésien,IDR
+70,Johannesburg,ZA-JHB,Afrique du Sud,ZAF,SAST,Afrique,Anglais,ZAR
+71,Helsinki,FI-18,Finlande,FIN,EET,Europe,Finnois,EUR
+72,Stockholm,SE-AB,Suède,SWE,CET,Europe,Suédois,SEK
+73,Oslo,NO-03,Norvège,NOR,CET,Europe,Norvégien,NOK
+74,Copenhague,DK-84,Danemark,DNK,CET,Europe,Danois,DKK
+75,Dublin,IE-D,Irlande,IRL,GMT,Europe,Anglais,EUR
+76,Édimbourg,GB-SCO,Royaume-Uni,GBR,GMT,Europe,Anglais,GBP
+77,Lisbonne,PT-11,Portugal,PRT,WET,Europe,Portugais,EUR
+78,Prague,CZ-PR,Tchéquie,CZE,CET,Europe,Tchèque,CZK
+79,Vienne,AT-9,Autriche,AUT,CET,Europe,Allemand,EUR
+80,Budapest,HU-BU,Hongrie,HUN,CET,Europe,Hongrois,HUF
+81,Varsovie,PL-MZ,Pologne,POL,CET,Europe,Polonais,PLN
+82,Zurich,CH-ZH,Suisse,CHE,CET,Europe,Allemand,CHF
+83,Bruxelles,BE-BRU,Belgique,BEL,CET,Europe,Français,EUR
+84,Amsterdam,NL-NH,Pays-Bas,NLD,CET,Europe,Néerlandais,EUR
+85,Doha,QA-DA,Qatar,QAT,GST,Asie,Arabe,QAR
+86,Riyad,SA-RUH,Arabie Saoudite,SAU,AST,Asie,Arabe,SAR
+87,Tel Aviv,IL-TA,Israël,ISR,IST,Asie,Hébreu,ILS
+88,Manille,PH-00,Philippines,PHL,PHT,Asie,Filipino,PHP
+89,Taipei,TW-TPE,Taïwan,TWN,CST,Asie,Mandarin,TWD
+90,Auckland,NZ-AUK,Nouvelle-Zélande,NZL,NZST,Océanie,Anglais,NZD
+91,Santiago,CL-RM,Chili,CHL,CLT,Amériques,Espagnol,CLP
+92,Bogotá,CO-DC,Colombie,COL,COT,Amériques,Espagnol,COP
+93,Boston,US-MA,États-Unis,USA,EST,Amériques,Anglais,USD
+94,Toronto,CA-ON,Canada,CAN,EST,Amériques,Anglais,CAD
+95,Dresde,DE-DR,Allemagne,DEU,CET,Europe,Allemand,EUR
+96,Florence,IT-52,Italie,ITA,CET,Europe,Italien,EUR
+97,Hyderabad,IN-TG,Inde,IND,IST,Asie,Telugu,INR
+98,Mumbai,IN-MH,Inde,IND,IST,Asie,Hindi,INR
+99,Kuala Lumpur,MY-14,Malaisie,MYS,MYT,Asie,Malais,MYR
+100,Lagos,NG-LA,Nigeria,NGA,WAT,Afrique,Anglais,NGN
